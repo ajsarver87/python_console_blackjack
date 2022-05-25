@@ -1,0 +1,45 @@
+Blackjack Console Game:
+
+1 player vs the computer
+Player Start with $1000 dollars - will be able to bet whatever
+Player will play until they quit or go bankrupt
+
+Player will be able to 
+ - Hit
+ - Stand
+ - Double Down
+ - Split
+
+Dealer hits until hand results in 17 or higher
+Bust means dealer wins
+
+*CLASSES*
+
+Player
+	attribute
+		money
+		hand
+	method	
+		determine hand value
+		stand
+		hit
+		double down
+		split
+
+Dealer
+    attribute
+    method
+        play game
+            dealer will keep hitting until he gets to 17 or higher
+
+Game Class
+    attribute  
+        player
+        game
+        player bet
+    method
+        player bet
+        player play
+            will play until he stands or busts (dealer automatically wins)
+        dealer play
+        determine winnings
