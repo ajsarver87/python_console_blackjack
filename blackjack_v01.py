@@ -76,7 +76,7 @@ def print_hand_value(hand):
     for card in hand:
         suit = suit_dict.get(card[0])
         value = value_dict.get(card[1])
-    print('{value} of {suit}'.format(value = value, suit = suit))
+        print('{value} of {suit}'.format(value = value, suit = suit))
 
 
 deck = full_deck
@@ -86,13 +86,17 @@ player = Player()
 dealer = Dealer()
 
 inital_deal(player = player, dealer = dealer)
+print('\nThe Player has:')
 print_hand_value(player.hand)
+print('for a score of:{score}'.format(score = player.calc_hand_value()))
+print('\nThe Dealer has:')
 print_hand_value(dealer.hand)
+print('for a score of:{score}'.format(score = dealer.calc_hand_value()))
 
 if player.calc_hand_value() > dealer.calc_hand_value():
-    print('Player Wins!')
+    print('\nPlayer Wins!')
 else:
-    print('Dealer Wins!')
+    print('\nDealer Wins!')
 
 
 
