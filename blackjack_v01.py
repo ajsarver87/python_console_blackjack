@@ -49,7 +49,22 @@ class Player:
         value = 0
         for card in self.hand:
             value += value_lookup_dictionary.get(card)
+
+        for card in self.hand:
+            if card[1] == 'A' and value > 21:
+                value = 0
+                for card in self.hand:
+                    if card[1] == 'A':
+                        value += 1
+                    else:
+                        value += value_lookup_dictionary.get(card)
         return value
+
+    def hit(self):
+        self.hand.append(deck.pop(0))
+
+    def clear_hand(self):
+        self.hand = []
 
 #Dealer Class
 class Dealer:
@@ -60,7 +75,22 @@ class Dealer:
         value = 0
         for card in self.hand:
             value += value_lookup_dictionary.get(card)
+
+        for card in self.hand:
+            if card[1] == 'A' and value > 21:
+                value = 0
+                for card in self.hand:
+                    if card[1] == 'A':
+                        value += 1
+                    else:
+                        value += value_lookup_dictionary.get(card)
         return value
+
+    def hit(self):
+        self.hand.append(deck.pop(0))
+
+    def clear_hand(self):
+        self.hand = []
 
 #Fuction for initial Deal
 def inital_deal(player, dealer):
@@ -78,25 +108,50 @@ def print_hand_value(hand):
         value = value_dict.get(card[1])
         print('{value} of {suit}'.format(value = value, suit = suit))
 
-
-deck = full_deck
-random.shuffle(deck)
-
 player = Player()
 dealer = Dealer()
 
-inital_deal(player = player, dealer = dealer)
-print('\nThe Player has:')
-print_hand_value(player.hand)
-print('for a score of:{score}'.format(score = player.calc_hand_value()))
-print('\nThe Dealer has:')
-print_hand_value(dealer.hand)
-print('for a score of:{score}'.format(score = dealer.calc_hand_value()))
+while player.money > 0:
+    bet = int(input('You have ${money}.  How much would you like to bet? '.format(money = player.money)))
+    deck = full_deck
+    random.shuffle(deck)
 
-if player.calc_hand_value() > dealer.calc_hand_value():
-    print('\nPlayer Wins!')
-else:
-    print('\nDealer Wins!')
+    is_playerstand = 0
+    inital_deal(player = player, dealer = dealer)
 
+    while is_playerstand == 0:
+        print('\nThe Player has:')
+        print_hand_value(player.hand)
+        print('for a score of:{score}'.format(score = player.calc_hand_value()))
+        action = ''
+        
+        while action not in ('HIT','STAND'):
+            action = input('Would you like to HIT or STAND? ').upper()
+            if action == 'HIT':
+                player.hit()
+                if player.calc_hand_value() > 21:
+                    print('\nYou have busted with a {value}!'.format(value = player.calc_hand_value()))
+                    is_playerstand = 1
+            elif action == 'STAND':
+                is_playerstand = 1
+            else:
+                print('Try your selection again.')
 
+    while dealer.calc_hand_value() <= 16:
+        dealer.hit()
+        
+    print('\nThe Dealer has:')
+    print_hand_value(dealer.hand)
+    print('for a score of:{score}'.format(score = dealer.calc_hand_value()))
 
+    if (player.calc_hand_value() > dealer.calc_hand_value() and player.calc_hand_value() <= 21) or dealer.calc_hand_value() > 21:
+        print('\nPlayer Wins!')
+        player.money += bet
+    elif player.calc_hand_value() == dealer.calc_hand_value():
+        print('\nPush.')
+    else:
+        print('\nDealer Wins!')
+        player.money -= bet
+
+    player.clear_hand()
+    dealer.clear_hand()
