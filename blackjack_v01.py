@@ -136,5 +136,13 @@ while player.money > 0:
         print('\nDealer Wins!')
         player.money -= bet
 
+    print('You have ${money}'.format(money = player.money))
+
     player.clear_hand()
     dealer.clear_hand()
+
+    game_status = ''
+    game_status = input('Type QUIT to quit or press ENTER to continue:').upper()
+    if game_status == 'QUIT':
+        print('You walk away with ${money}'.format(money = player.money))
+        player.money = 0
