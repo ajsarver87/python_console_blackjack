@@ -99,8 +99,8 @@ while player.money > 0:
         print('for a score of:{score}'.format(score = player.calc_hand_value()))
         action = ''
         
-        while action not in ('HIT','STAND'):
-            action = input('Would you like to HIT or STAND? ').upper()
+        while action not in ('HIT','STAND','DOUBLE DOWN'):
+            action = input('Would you like to HIT, STAND, or DOUBLE DOWN? ').upper()
             if action == 'HIT':
                 player.hit()
                 if player.calc_hand_value() > 21:
@@ -108,8 +108,17 @@ while player.money > 0:
                     is_playerstand = 1
             elif action == 'STAND':
                 is_playerstand = 1
+            elif action == 'DOUBLE DOWN':
+                bet = bet * 2
+                player.hit()
+                is_playerstand = 1
             else:
                 print('Try your selection again.')
+
+        if is_playerstand == 1:
+            print('\nThe Player has:')
+            print_hand_value(player.hand)
+            print('for a score of:{score}'.format(score = player.calc_hand_value()))
 
     while dealer.calc_hand_value() <= 16:
         dealer.hit()
