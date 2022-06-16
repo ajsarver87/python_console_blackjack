@@ -66,32 +66,6 @@ class Player:
     def clear_hand(self):
         self.hand = []
 
-#Dealer Class
-class Dealer:
-    def __init__(self):
-        self.hand = []
-
-    def calc_hand_value(self):
-        value = 0
-        for card in self.hand:
-            value += value_lookup_dictionary.get(card)
-
-        for card in self.hand:
-            if card[1] == 'A' and value > 21:
-                value = 0
-                for card in self.hand:
-                    if card[1] == 'A':
-                        value += 1
-                    else:
-                        value += value_lookup_dictionary.get(card)
-        return value
-
-    def hit(self):
-        self.hand.append(deck.pop(0))
-
-    def clear_hand(self):
-        self.hand = []
-
 #Fuction for initial Deal
 def inital_deal(player, dealer):
     player.hand.append(deck.pop(0))
@@ -109,7 +83,7 @@ def print_hand_value(hand):
         print('{value} of {suit}'.format(value = value, suit = suit))
 
 player = Player()
-dealer = Dealer()
+dealer = Player()
 
 while player.money > 0:
     bet = int(input('You have ${money}.  How much would you like to bet? '.format(money = player.money)))
