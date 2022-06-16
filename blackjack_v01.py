@@ -2,7 +2,7 @@ import random
 
 # initialize the one deck
 suits = ['D', 'H', 'S', 'C']
-numbers = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+numbers = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A']
 full_deck = []
 
 for suit in suits:
@@ -30,7 +30,7 @@ for card in full_deck:
         temp_value = 8
     elif card[1] == '9':
         temp_value = 9
-    elif card[1] in ['J','Q','K']:
+    elif card[1] in ['J','Q','K','T']:
         temp_value = 10
     elif card[1] == 'A':
         temp_value = 11
@@ -63,21 +63,31 @@ class Dealer:
         return value
 
 #Fuction for initial Deal
-deck = full_deck
-random.shuffle(deck)
-
 def inital_deal(player, dealer):
     player.hand.append(deck.pop(0))
     dealer.hand.append(deck.pop(0))
     player.hand.append(deck.pop(0))
     dealer.hand.append(deck.pop(0))
 
+#Function to print Hand Values
+def print_hand_value(hand):
+    suit_dict = {'H':'Hearts', 'S':'Spades', 'C':'Clubs', 'D':'Diamonds'}
+    value_dict = {'A':'Ace', '2':'Two', '3':'Three', '4':'Four', '5':'Five', '6':'Six', '7':'Seven', '8':'Eight', '9':'Nine', 'T':'Ten', 'J':'Jack', 'Q':'Queen', 'K':'King'}
+    for card in hand:
+        suit = suit_dict.get(card[0])
+        value = value_dict.get(card[1])
+    print('{value} of {suit}'.format(value = value, suit = suit))
+
+
+deck = full_deck
+random.shuffle(deck)
+
 player = Player()
 dealer = Dealer()
 
 inital_deal(player = player, dealer = dealer)
-print(player.hand)
-print(dealer.hand)
+print_hand_value(player.hand)
+print_hand_value(dealer.hand)
 
 if player.calc_hand_value() > dealer.calc_hand_value():
     print('Player Wins!')
